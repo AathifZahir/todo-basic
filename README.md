@@ -1,129 +1,131 @@
 # To-Do List Application
 
-This is a simple To-Do List application built with Spring Boot and MySQL, which allows users to:
+## Overview
 
-- Add a task.
-- Mark a task as completed.
-- Delete a task.
-- View the list of tasks.
+This is a simple To-Do List application built with Spring Boot and MySQL, allowing users to:
+
+- Add a task
+- Mark a task as completed
+- Delete a task
+- View the list of tasks
 
 ## Features
 
-- Backend: Spring Boot (Java)
-- Database: MySQL
-- CRUD operations for tasks
+- **Backend:** Spring Boot (Java)
+- **Database:** MySQL
+- **CRUD operations** for managing tasks
+- **RESTful APIs** for task management
 
 ## Prerequisites
 
-Before you can run the application, ensure you have the following installed:
+Before running the application, ensure you have the following installed:
 
 - Java 17 or later
 - Maven
 - MySQL Server
-- Postman (optional for testing APIs)
+- Postman (optional for API testing)
 
 ## Setup Instructions
 
-### Step 1: Clone the repository
+### Step 1: Clone the Repository
 
 First, clone this repository to your local machine using Git:
 
-```
+```sh
 git clone https://github.com/yourusername/todo-basic.git
-cd todo-basic.git
+cd todo-basic
 ```
 
 ### Step 2: Configure MySQL
 
-1. Ensure MySQL is installed and running on your system.
-2. Create a new database in MySQL:
+Ensure MySQL is installed and running on your system.
+Create a new database in MySQL:
 
-```
+```sql
 CREATE DATABASE todo_db;
 ```
 
-3. In the `src/main/resources/application.properties` file, update the database connection settings with your MySQL credentials:
+In the `src/main/resources/application.properties` file, update the database connection settings with your MySQL credentials:
 
-```
+```properties
 spring.datasource.url=jdbc:mysql://localhost:3306/todo_db
 spring.datasource.username=root
 spring.datasource.password=root
 ```
 
-### Step 3: Build the application
+### Step 3: Build the Application
 
 You can build the application using Maven:
 
-```
+```sh
 mvn clean install
 ```
 
-This will compile the code and package it into a `.jar` file in the `target/` folder.
+### Step 4: Run the Application
 
-### Step 4: Run the application
+Start the application using the following command:
 
-Run the application by executing the following command:
-
-```
+```sh
 mvn spring-boot:run
 ```
 
-The Spring Boot application should start, and you can access it via `http://localhost:8080`.
+### Step 5: Test the API Endpoints
 
-## Testing with Postman
+You can use Postman or `curl` to test the API endpoints.
 
-You can test the CRUD operations using Postman by sending HTTP requests to the following endpoints:
+#### List all tasks
 
-1. **Get all tasks** (GET):
+```sh
+GET http://localhost:8080/tasks
+```
 
-   - URL: `http://localhost:8080/tasks`
+#### Get a task by ID
 
-2. **Get a task by ID** (GET):
+```sh
+GET http://localhost:8080/tasks/{id}
+```
 
-   - URL: `http://localhost:8080/tasks/{id}`
+#### Create a new task
 
-3. **Create a new task** (POST):
+```sh
+POST http://localhost:8080/tasks
+Content-Type: application/json
 
-   - URL: `http://localhost:8080/tasks`
-   - Body (JSON):
-     ```json
-     {
-       "title": "Buy groceries",
-       "completed": false
-     }
-     ```
-
-4. **Update a task** (PUT):
-
-   - URL: `http://localhost:8080/tasks/{id}`
-   - Body (JSON):
-     ```json
-     {
-       "title": "Buy groceries and cook dinner",
-       "completed": true
-     }
-     ```
-
-5. **Delete a task** (DELETE):
-   - URL: `http://localhost:8080/tasks/{id}`
-
-### Example
-
-To add a new task, send a `POST` request with a JSON body like:
-
-```json
 {
-  "title": "Go to the gym",
+  "title": "New Task",
   "completed": false
 }
 ```
 
-## Notes
+#### Update task status
 
-- The application uses MySQL for storing tasks.
-- If you want to test this application locally, ensure you have MySQL running and the database `todo_db` created before running the application.
-- You can also modify `application.properties` to connect to a remote MySQL server if needed.
+```sh
+PATCH http://localhost:8080/tasks/{id}/status
+Content-Type: application/json
+
+{
+  "completed": true
+}
+```
+
+#### Delete a task
+
+```sh
+DELETE http://localhost:8080/tasks/{id}
+```
+
+## Technologies Used
+
+- **Spring Boot** - Backend framework
+- **Spring Data JPA** - ORM for database interaction
+- **MySQL** - Relational database
+- **Lombok** - Reduces boilerplate code in Java
+- **Maven** - Build automation tool
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License.
+
+## Author
+
+[Your Name](https://github.com/yourusername)
