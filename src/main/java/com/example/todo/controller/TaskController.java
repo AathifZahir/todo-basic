@@ -2,7 +2,7 @@ package com.example.todo.controller;
 
 import com.example.todo.model.Task;
 import com.example.todo.service.TaskService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.todo.exception.TaskNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,14 +23,18 @@ public class TaskController {
 
     @GetMapping
     public ResponseEntity<List<Task>> getAllTasks() {
-        return ResponseEntity.ok(taskService.getAllTasks());
+        List<Task> tasks = taskService.getAllTasks();
+        if (tasks.isEmpty()) {
+            throw new TaskNotFoundException("No tasks found");
+        }
+        return ResponseEntity.ok(tasks);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Task> getTaskById(@PathVariable Long id) {
         return taskService.getTaskById(id)
                 .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+                .orElseThrow(() -> new TaskNotFoundException("Task with ID " + id + " not found"));
     }
 
     @PostMapping
@@ -42,14 +46,15 @@ public class TaskController {
     public ResponseEntity<Task> updateTaskStatus(@PathVariable Long id, @RequestBody Task updatedTask) {
         return taskService.updateTaskStatus(id, updatedTask.isCompleted())
                 .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+                .orElseThrow(() -> new TaskNotFoundException("Task with ID " + id + " not found"));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
+        if (!taskService.getTaskById(id).isPresent()) {
+            throw new TaskNotFoundException("Task with ID " + id + " not found");
+        }
         taskService.deleteTask(id);
         return ResponseEntity.noContent().build();
     }
 }
-
-
