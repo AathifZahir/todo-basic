@@ -128,4 +128,4 @@ This project is licensed under the MIT License.
 
 ## Author
 
-[Your Name](https://github.com/AathifZahir)
+[Aathif Zahir](https://github.com/AathifZahir)
